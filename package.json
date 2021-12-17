@@ -16,8 +16,10 @@
   },
   "homepage": "https://github.com/GeorgiyEloev/Backend_full-stack_Modul3#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.2",
-    "init": "^0.1.2"
+    "init": "^0.1.2",
+    "mongoose": "^6.1.2"
   },
   "description": ""
 }
