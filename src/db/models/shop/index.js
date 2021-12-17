@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 const shopSchema = new Schema({
   shop: String,
-  date: String,
+  date: { type: Date, default: Date.now },
   money: String,
 });
 
