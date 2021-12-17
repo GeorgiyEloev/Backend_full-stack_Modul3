@@ -3,7 +3,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const app = express();
 
-// const apiRoutes = require("./src/modules/routes/routes");
+const apiRoutes = require("./src/modules/routes/routes");
 
 app.use(cors());
 
@@ -12,7 +12,7 @@ const url =
 mongoose.connect(url);
 
 app.use(express.json());
-// app.use("/", apiRoutes);
+app.use("/", apiRoutes);
 
 app.listen(8000, () => {
   console.log("listening on port 8000!");
