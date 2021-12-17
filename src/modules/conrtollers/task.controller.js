@@ -7,7 +7,14 @@ module.exports.getAllShops = (req, res) => {
 };
 
 module.exports.createNewShop = (req, res) => {
-  if (req.body.hasOwnProperty("shop") && req.body.hasOwnProperty("money")) {
+  const body = req.body;
+
+  if (
+    body.hasOwnProperty("shop") &&
+    body.hasOwnProperty("money") &&
+    body.shop.trim() &&
+    +body.money
+  ) {
     const shop = new Shop(req.body);
     shop.save().then(() => {
       Shop.find().then((result) => {
@@ -34,13 +41,20 @@ module.exports.deleteShop = (req, res) => {
 
 module.exports.changeShop = (req, res) => {
   const body = req.body;
-  if (
-    body.hasOwnProperty("_id") &&
-    (body.hasOwnProperty("shop") ||
-      body.hasOwnProperty("date") ||
-      body.hasOwnProperty("money"))
-  ) {
-    Shop.updateOne({ _id: body._id }, body).then(() => {
+  const obj = {};
+
+  if (body.hasOwnProperty("_id") && body._id.trim()) {
+    obj._id = body._id.trim();
+    if (body.hasOwnProperty("shop") && body.shop.trim()) {
+      obj.shop = body.shop.trim();
+    }
+    if (body.hasOwnProperty("date") && body.date.trim()) {
+      obj.date = body.date.trim();
+    }
+    if (body.hasOwnProperty("money") && +body.money) {
+      obj.money = body.money;
+    }
+    Shop.updateOne({ _id: obj._id }, obj).then(() => {
       Shop.find().then((result) => {
         res.send({ data: result });
       });

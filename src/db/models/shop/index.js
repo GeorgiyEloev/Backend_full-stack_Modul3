@@ -5,7 +5,7 @@ const { Schema } = mongoose;
 const shopSchema = new Schema({
   shop: String,
   date: { type: Date, default: Date.now },
-  money: String,
+  money: Number,
 });
 
 module.exports = Shop = mongoose.model("shops", shopSchema);
