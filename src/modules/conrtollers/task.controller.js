@@ -13,7 +13,7 @@ module.exports.createNewShop = (req, res) => {
     body.hasOwnProperty("shop") &&
     body.hasOwnProperty("money") &&
     body.shop.trim() &&
-    +body.money
+    +body.money && body.money > 0
   ) {
     const shop = new Shop(req.body);
     shop.save().then(() => {
@@ -22,7 +22,7 @@ module.exports.createNewShop = (req, res) => {
       });
     });
   } else {
-    res.status(422).send("Error! Неверные параметры!");
+    res.status(422).send("Error! Invalid parameters");
   }
 };
 
@@ -35,7 +35,7 @@ module.exports.deleteShop = (req, res) => {
       });
     });
   } else {
-    res.status(422).send("Error! Неверные параметры!");
+    res.status(422).send("Error! Invalid parameters!");
   }
 };
 
@@ -51,7 +51,7 @@ module.exports.changeShop = (req, res) => {
     if (body.hasOwnProperty("date") && body.date.trim()) {
       obj.date = body.date.trim();
     }
-    if (body.hasOwnProperty("money") && +body.money) {
+    if (body.hasOwnProperty("money") && +body.money && body.money > 0) {
       obj.money = body.money;
     }
     Shop.updateOne({ _id: obj._id }, obj).then(() => {
@@ -60,6 +60,6 @@ module.exports.changeShop = (req, res) => {
       });
     });
   } else {
-    res.status(422).send("Error! Неверные параметры!");
+    res.status(422).send("Error! Invalid parameters!");
   }
 };
