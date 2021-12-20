@@ -7,15 +7,20 @@ module.exports.getAllShops = (req, res) => {
 };
 
 module.exports.createNewShop = (req, res) => {
-  const body = req.body;
-
+  const body = {};
+	for (let key in req.body) {
+		body[key] = req.body[key].trim();
+	}
   if (
     body.hasOwnProperty("shop") &&
     body.hasOwnProperty("money") &&
     body.shop.trim() &&
-    +body.money && body.money > 0
+    body.shop.trim().length <= 16 &&
+    +body.money &&
+    body.money > 0 &&
+    body.money <= 9999999
   ) {
-    const shop = new Shop(req.body);
+    const shop = new Shop(body);
     shop.save().then(() => {
       Shop.find().then((result) => {
         res.send({ data: result });
@@ -45,13 +50,22 @@ module.exports.changeShop = (req, res) => {
 
   if (body.hasOwnProperty("_id") && body._id.trim()) {
     obj._id = body._id.trim();
-    if (body.hasOwnProperty("shop") && body.shop.trim()) {
+    if (
+      body.hasOwnProperty("shop") &&
+      body.shop.trim() &&
+      body.shop.trim().length <= 16
+    ) {
       obj.shop = body.shop.trim();
     }
     if (body.hasOwnProperty("date") && body.date.trim()) {
       obj.date = body.date.trim();
     }
-    if (body.hasOwnProperty("money") && +body.money && body.money > 0) {
+    if (
+      body.hasOwnProperty("money") &&
+      +body.money &&
+      body.money > 0 &&
+      body.money <= 9999999
+    ) {
       obj.money = body.money;
     }
     Shop.updateOne({ _id: obj._id }, obj).then(() => {
